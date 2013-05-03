@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+	<title>Untitled</title>
+	
+<style>
+
+body {
+background: #444;
+}
+   
+#music {
+   position: absolute;
+   top: 50px;
+   right: 0;
+   height: 60px;
+   width: 70px;
+   border: 0px solid #999;
+   border-radius: 20px 0 0 20px;
+   background: url(http://paulmccann.com/musicplayer/img/glyphicons_017_music.png) no-repeat 10px 10px white;
+   background-color: rgba(255, 255, 255, .5);
+   overflow: hidden;
+}
+   
+#controlP {
+   position: absolute;
+   top: 13px;
+   left: 40px;
+   height: 20px;
+   width: 20px;
+   border: 0px solid #999;
+   background: url(http://paulmccann.com/musicplayer/img/glyphicons_174_pause.png) no-repeat 50% 50%;
+}
+ 
+ #music.wide {
+ width: 260px;
+ }
+ 
+ #controlP.paused {
+ background: url(http://paulmccann.com/musicplayer/img/glyphicons_173_play.png) no-repeat 50% 50%;
+ }
+ 
+ #musicinfo {
+	position: absolute;
+   top: 40px;
+   left: 10px;
+   padding: 0;
+ 	font-size: 9px;
+ 	border: 0px solid white;
+   height: 20px;
+   width: 60px;
+   background: none;
+   cursor: pointer;
+ }
+ 
+ #playlist {
+   position: absolute;
+   top: 4px;
+   left: 70px;
+   width: 180px;
+   height: 48px;
+   margin: 0; padding: 0;
+   overflow: auto;
+   padding: 2px;
+   font-size: 9px;
+   background: #ddd;
+   box-shadow: inset 0px 0px 4px #555;
+ }
+ 
+ #playlist a {
+ color: #333;
+ text-decoration: none;
+ display: block;
+ padding: 2px;
+ }
+ 
+ #playlist .hilite {
+ color: #41A168;
+ background: #fff;
+ }
+ 
+ #explanation {
+ font: 17px arial;
+ color: white;
+ }
+ 
+
+</style>  
+   
+   
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function(){
+
+$('#playlist .first').trigger('click');
+
+var playing = true;
+
+$('#musicinfo').toggle(function() {
+		$('#music').addClass('wide');
+		$(this).text('close');
+  	}, function(){
+  		$('#music').removeClass('wide');
+		$(this).text('music info');
+});
+  
+  
+$('#playlist a').click(function(e){
+  playing = true;
+  buttonControl();
+  $('#playlist a').removeClass('hilite');
+  $(this).toggleClass('hilite');
+  $('#controlP').removeClass('paused');
+  currentSong = $(this).attr('href');
+  // console.log(currentSong);
+  // console.log(playing);
+  $('audio').attr('src', currentSong);
+  
+  $('audio').trigger('play');
+
+  e.preventDefault();
+ });
+  
+function buttonControl() {
+	if (playing == false) {
+		$('#controlP').removeClass('paused');
+	} else if (playing == true) {
+		$('#controlP').addClass('paused');
+	}
+}
+
+$('#controlP').click(function(){
+
+	if (playing == false) {
+		$('audio').trigger('play');
+		$('#controlP').removeClass('paused');
+		playing = true;
+	} else if (playing == true) {
+		$('audio').trigger('pause');
+		$('#controlP').addClass('paused');
+	playing = false;
+	}
+}); // end click
+
+});
+</script>
+ 
+</head>
+<body>
+   <div id="music" >
+   <audio src="mp3/01SchubertTrack01.mp3" id="player" autoplay>
+   </audio>
+   <button id="controlP" class="playing"></button>
+   <button id="musicinfo">Music info &rarr;</button>
+   
+<ul id="playlist">
+   <li><a href="http://paulmccann.com/musicplayer/mp3/01SchubertTrack01.mp3" class="first">Schubert</a></li>
+	<li><a href="http://paulmccann.com/musicplayer/mp3/11Mendelssohntrio.mp3">Mendelssohn Trio</a></li>
+	<li><a href="http://paulmccann.com/musicplayer/mp3/09Adanteespressivo09.mp3">Adantees Pressivo</a></li>
+	<li><a href="http://paulmccann.com/musicplayer/mp3/05IlyaLevinson05.mp3">Ilya Levinson Shtetl Scenes Introspection</a></li>
+	<li><a href="http://paulmccann.com/musicplayer/mp3/06IlyaLevinson06.mp3">Ilya Levinson Shetl Scenes</a></li>
+	<li><a href="http://paulmccann.com/musicplayer/mp3/01BeethovenClarinet.mp3">Beethoven Clarinet Trio op. 11</a></li>
+</ul>
+
+   </div>
+   
+<div id="explanation">
+   <p>
+   This is a simple jquery music player. The to do list includes:
+   </p>
+<ul>
+	<li>	 Autoplay controls shouldn't be needed - the jquery should trigger the first song.</li>
+	<li>   Encapsulating the jquery for distribution as a plug-in</li>
+	<li>   Keystroke pause option</li>
+	<li>   When one song ends, play the next</li>
+	<li>   Maybe an animated slide out would be nice (an easy)</li>
+	<li>   Style themes?</li>
+</ul>
+</div>
+   
+</body>
+</html>
